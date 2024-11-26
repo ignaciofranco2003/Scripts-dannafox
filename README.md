@@ -20,7 +20,7 @@ pip freeze > req.txt
 
 ### Para ejecutar el programa
 ```python
-py menu.py
+py Menu.py
 ```
 
 #### .env
