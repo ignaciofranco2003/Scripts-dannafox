@@ -18,6 +18,11 @@ pip install -r req.txt
 pip freeze > req.txt
 ```
 
+### Para ejecutar el programa
+```python
+py menu.py
+```
+
 #### .env
 ```
 DB_HOST=
