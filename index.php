@@ -92,9 +92,8 @@
                     $cantidad = $_POST['cantidad'] ?? null;
 
                     if ($localidad && $cantidad) {
-                        // Llama a tu script de Python para ejecutar main()
-                        $localidad = escapeshellarg($localidad); // Escapar la localidad para manejar espacios y caracteres especiales
-                        $command = ".venv\\Scripts\\activate && python generar_numeros.py $localidad $cantidad";  // Usar comillas dobles
+                        $localidad = escapeshellarg($localidad);
+                        $command = ".venv\\Scripts\\activate && python generar_numeros.py $localidad $cantidad";
                         $output = shell_exec($command);
                         echo "<div class='message'>Opción 1 ejecutada: <br/> $output</div>";
                     } else {
@@ -111,7 +110,6 @@
                     $id_campania = $_POST['id_campania'] ?? null;
 
                     if ($id_campania) {
-                        // Llama a tu script de Python para ejecutar generate_campaign_report
                         $command = ".venv\\Scripts\\activate && python generate_campaign_report.py $id_campania";
                         $output = shell_exec($command);
                         echo "<div class='message'>Opción 3 ejecutada: <br/> $output </div>";
