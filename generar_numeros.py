@@ -53,7 +53,6 @@ def main(localidad : str, cantidad_a_generar : int):
         ]
     }
 
-    print(localidad)
     sql_search_localidad = """
                             SELECT COUNT(*) AS total FROM numeros
                                 LEFT JOIN localidades ON numeros.localidad_id = localidades.localidad_id
@@ -173,16 +172,17 @@ def generar_numero_telefono(prefijo : str, cant) -> str:
 
 
 if __name__ == '__main__':
-    
+    # Verificamos si el parámetro '--generate-json' está presente
     if '--generate-json' in sys.argv:
         generate_json_localidades()
 
-    if '--insertar-localidades' in sys.argv:
+    # Verificamos si el parámetro '--insertar-localidades' está presente
+    elif '--insertar-localidades' in sys.argv:
         insertar_localidades('localidades.json')
         sys.exit(0)
 
-
-    if sys.argv[1] == '--all':
+    # Verificamos si se pasa el parámetro '--all'
+    elif sys.argv[1] == '--all':
         file_path = Path('localidades.json')
 
         if not file_path.is_file():
@@ -194,6 +194,12 @@ if __name__ == '__main__':
         localidades = data['localidades']
 
         for i in localidades:
-            main(i)
-    else: 
-        main(sys.argv[1])
+            main(i, 10)  # Asumiendo que deseas generar 10 números para cada localidad
+    else:
+        # Si no se pasó '--all', tomamos el primer y segundo parámetro
+        if len(sys.argv) < 3:
+            print("Se necesitan dos parámetros: localidad y cantidad_a_generar.")
+            sys.exit(1)
+        localidad = sys.argv[1]
+        cantidad_a_generar = int(sys.argv[2])
+        main(localidad, cantidad_a_generar)

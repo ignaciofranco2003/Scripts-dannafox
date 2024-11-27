@@ -1,6 +1,4 @@
-﻿# generate_report.py
-
-import pandas as pd
+﻿import pandas as pd
 import smtplib
 from dotenv import load_dotenv
 import os
@@ -8,6 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
 import mysql.connector
+import sys  # Importa sys para trabajar con los argumentos de la línea de comandos
 
 load_dotenv()
 
@@ -30,9 +29,8 @@ EMAIL_CONFIG = {
 
 
 def get_campaign_data(campania_id):
-    print("get campaign data")
     """Obtiene datos de la campaña desde la base de datos"""
-    print("Conectando a la base de datos...")
+
     sql_query = """SELECT 
         c.razon_social, 
         c.cuil_cuit, 
@@ -76,7 +74,6 @@ def generate_excel_report(campaign, file_path):
 
     df = pd.DataFrame(data)
     df.to_excel(file_path, index=False)
-    print(f'Reporte generado: {file_path}')
 
 def send_email_with_attachment(receiver_email, file_path):
     """Envía un correo electrónico con un archivo adjunto"""
@@ -95,7 +92,7 @@ def send_email_with_attachment(receiver_email, file_path):
         server.starttls()
         server.login(EMAIL_CONFIG['sender_email'], EMAIL_CONFIG['password'])
         server.sendmail(EMAIL_CONFIG['sender_email'], receiver_email, msg.as_string())
-        print(f'Correo enviado a {receiver_email}')
+        print(f'Correo enviado a {receiver_email}\n')
 
 def generate_campaign_report(campania_id):
     """Genera el reporte y lo envía por correo"""
@@ -116,9 +113,20 @@ def generate_campaign_report(campania_id):
 
         # Eliminar el archivo después de enviar el correo
         os.remove(file_path)
-        print('Proceso completado con éxito.')
+        print('Proceso completado con exito.')
 
     except ValueError as e:
         print(e)
     except Exception as e:
         print(f'Error inesperado: {e}')
+
+# Verificar que se pasó la ID de la campaña como argumento
+if len(sys.argv) != 2:
+    print("Uso: python generate_report.py <ID_Campania>")
+    sys.exit(1)
+
+# Obtener la ID de la campaña del argumento
+campania_id = sys.argv[1]
+
+# Ejecutar la función de generar reporte
+generate_campaign_report(campania_id)
