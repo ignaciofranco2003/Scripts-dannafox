@@ -75,6 +75,11 @@
                 <input type="number" id="cantidad" name="cantidad" placeholder="Ej: 100" />
             </div>
 
+            <div id="opcion2" style="display: none;">
+                <label for="id">ID de la campaña:</label>
+                <input type="text" id="id" name="id" placeholder="Ej: 54321" />
+            </div>
+
             <div id="opcion3" style="display: none;">
                 <label for="id_campania">ID de la campaña:</label>
                 <input type="text" id="id_campania" name="id_campania" placeholder="Ej: 12345" />
@@ -95,15 +100,21 @@
                         $localidad = escapeshellarg($localidad);
                         $command = ".venv\\Scripts\\activate && python generar_numeros.py $localidad $cantidad";
                         $output = shell_exec($command);
-                        echo "<div class='message'>Opción 1 ejecutada: <br/> $output</div>";
+                        echo "<div class='message'>¡Exito! <br/> $output</div>";
                     } else {
                         echo "<div class='message' style='background-color: #f8d7da; color: #721c24;'>Complete todos los campos.</div>";
                     }
                     break;
 
                 case "2":
-                    // Lógica para opción 2
-                    echo "<div class='message'>Opción 2 ejecutada: Generando datos...</div>";
+                    $id = $_POST['id'] ?? null;
+                    if ($id) {
+                        $command = ".venv\\Scripts\\activate && python generar_access.py $id";
+                        $output = shell_exec($command);
+                        echo "<div class='message'>¡Exito! (ruta: /campañas_output): <br/> $output</div>";
+                    } else {
+                        echo "<div class='message' style='background-color: #f8d7da; color: #721c24;'>Complete todos los campos.</div>";
+                    }
                     break;
 
                 case "3":
@@ -112,9 +123,9 @@
                     if ($id_campania) {
                         $command = ".venv\\Scripts\\activate && python generate_campaign_report.py $id_campania";
                         $output = shell_exec($command);
-                        echo "<div class='message'>Opción 3 ejecutada: <br/> $output </div>";
+                        echo "<div class='message'>¡Exito! <br/> $output </div>";
                     } else {
-                        echo "<div class='message' style='background-color: #f8d7da; color: #721c24;'>Faltan datos para la opción 3.</div>";
+                        echo "<div class='message' style='background-color: #f8d7da; color: #721c24;'>Complete todos los campos.</div>";
                     }
                     break;
 
@@ -133,10 +144,13 @@
     <script>
         document.getElementById('opcion').addEventListener('change', function () {
             document.getElementById('opcion1').style.display = 'none';
+            document.getElementById('opcion2').style.display = 'none';
             document.getElementById('opcion3').style.display = 'none';
 
             if (this.value === "1") {
                 document.getElementById('opcion1').style.display = 'block';
+            } else if (this.value === "2") {
+                document.getElementById('opcion2').style.display = 'block';
             } else if (this.value === "3") {
                 document.getElementById('opcion3').style.display = 'block';
             }

@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
 import mysql.connector
-import sys  # Importa sys para trabajar con los argumentos de la línea de comandos
+import sys
 
 load_dotenv()
 
