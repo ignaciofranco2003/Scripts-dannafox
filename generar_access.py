@@ -5,7 +5,7 @@ import os
 import win32com.client
 import string
 from dotenv import load_dotenv
-import sys  # Importamos sys para leer parámetros de la línea de comandos
+import sys
 
 load_dotenv()
 
